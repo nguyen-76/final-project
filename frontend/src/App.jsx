@@ -1,0 +1,49 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Box, Container } from "@chakra-ui/react";
+import UserPage from "./pages/UserPage";
+import PostPage from "./pages/PostPage";
+import Header from "./layouts/Header";
+import AuthPage from "./pages/AuthPage";
+import HomePage from "./pages/HomePage";
+import { useRecoilValue } from "recoil";
+import userAtom from "./app/userAtom";
+import UpdatePage from "./pages/UpdatePage";
+import CreatePost from "./components/CreatePost";
+import ChatPage from "./pages/ChatPage";
+
+const App = () => {
+  const user = useRecoilValue(userAtom);
+  return (
+    <Box position={"relative"} w={"full"}>
+      <Container maxW="620px">
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <HomePage /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/auth"
+            element={!user ? <AuthPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/update"
+            element={user ? <UpdatePage /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/:username"
+            element={user ? <UserPage /> : <Navigate to="/auth" />}
+          />
+          <Route path="/:username/post/:pid" element={<PostPage />} />
+          <Route
+            path="/chat"
+            element={user ? <ChatPage /> : <Navigate to="/auth" />}
+          />
+        </Routes>
+        {user && <CreatePost />}
+      </Container>
+    </Box>
+  );
+};
+
+export default App;
