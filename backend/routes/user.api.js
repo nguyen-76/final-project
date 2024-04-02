@@ -1,14 +1,24 @@
-const express = require("express");
-const {
-  followUnfollowUser,
-  updateProfile,
-  getUserProfile,
-} = require("../controllers/users.controller");
-const { protectFollow } = require("../validators/validator");
-const router = express.Router();
+import express from "express";
+import userController from "../controllers/users.controller.js";
+import validator from "../validators/validator.js";
 
-router.get("/profile/:query", getUserProfile);
-router.post("/follow/:id", protectFollow, followUnfollowUser);
-router.put("/update/:id", protectFollow, updateProfile);
+const userRouter = express.Router();
 
-module.exports = router;
+userRouter.get("/profile/:query", userController.getUserProfile);
+userRouter.get(
+  "/suggested",
+  validator.protectFollow,
+  userController.getSuggestedUsers
+);
+userRouter.post(
+  "/follow/:id",
+  validator.protectFollow,
+  userController.followUnfollowUser
+);
+userRouter.put(
+  "/update/:id",
+  validator.protectFollow,
+  userController.updateProfile
+);
+
+export { userRouter };

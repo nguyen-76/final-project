@@ -1,6 +1,6 @@
-const { generateTokenAndSetCookie } = require("../helpers/utils.js");
-const User = require("../models/User.js");
-const bcrypt = require("bcrypt");
+import generateTokenAndSetCookie from "../helpers/utils.js";
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
 const authController = {};
 
@@ -72,4 +72,4 @@ authController.logout = async (req, res) => {
   }
 };
 
-module.exports = authController;
+export default authController;

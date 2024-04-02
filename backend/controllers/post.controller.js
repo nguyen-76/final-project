@@ -1,6 +1,6 @@
-const Post = require("../models/Post.js");
-const User = require("../models/User.js");
-const cloudinary = require("cloudinary").v2;
+import User from "../models/User.js";
+import Post from "../models/Post.js";
+import { v2 as cloudinary } from "cloudinary";
 
 const postController = {};
 
@@ -131,13 +131,17 @@ postController.getTimeline = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    const myPost = await Post.find({ username: userId }).sort({
+      createdAt: -1,
+    });
+
     const following = user.following;
 
     const feedPosts = await Post.find({ username: { $in: following } }).sort({
       createdAt: -1,
     });
-
-    res.status(200).json(feedPosts);
+    const timeline = myPost.concat(...feedPosts);
+    res.status(200).json(timeline);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -160,25 +164,27 @@ postController.getUserPost = async (req, res) => {
 };
 
 postController.removeComment = async (req, res) => {
+  const { id, replyid } = req.params;
+  const post = await Post.findById(id);
   try {
-    const postId = req.params.id;
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    await Post.findOneAndUpdate(
-      post,
-      { $pull: { replies: repliesId } },
-      (err, data) => {
-        if (err) {
-          return res.status(500).json({ error: "error in deleting reply" });
-        }
-
-        res.json(data);
+    for (let i = 0; i < post[0].replies.length; i++) {
+      if (post[0].replies[i].id === replyid) {
+        await VehicleCategory.findByIdAndUpdate(
+          { _id: id },
+          { $pull: { replies: { id: replyid } } },
+          { new: true }
+        );
+        res.status(200).json({
+          message: "Comment deleted successfully.",
+        });
+      } else {
+        res.status(404).json({
+          message: "The given id is not found.",
+        });
       }
-    );
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-module.exports = postController;
+export default postController;

@@ -1,16 +1,21 @@
-const express = require("express");
-const {
-  sendMessage,
-  getMessage,
-  getAllMessage,
-} = require("../controllers/message.controller");
-const { protectFollow } = require("../validators/validator");
-const router = express.Router();
+import express from "express";
+import messageController from "../controllers/message.controller.js";
+import validator from "../validators/validator.js";
 
-router.get("/conversation", protectFollow, getAllMessage);
+const messageRouter = express.Router();
 
-router.get("/:otherUserId", protectFollow, getMessage);
+messageRouter.get(
+  "/conversation",
+  validator.protectFollow,
+  messageController.getAllMessage
+);
 
-router.post("/", protectFollow, sendMessage);
+messageRouter.get(
+  "/:otherUserId",
+  validator.protectFollow,
+  messageController.getMessage
+);
 
-module.exports = router;
+messageRouter.post("/", validator.protectFollow, messageController.sendMessage);
+
+export { messageRouter };

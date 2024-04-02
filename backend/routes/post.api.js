@@ -1,31 +1,39 @@
-const express = require("express");
-const {
-  createPost,
-  getPost,
-  removePost,
-  reactionPost,
-  commentOnPost,
-  getTimeline,
-  getUserPost,
-  removeComment,
-} = require("../controllers/post.controller");
-const { protectFollow } = require("../validators/validator");
-const router = express.Router();
+import express from "express";
+import postController from "../controllers/post.controller.js";
+import validator from "../validators/validator.js";
 
-router.get("/timeline", protectFollow, getTimeline);
+const postRouter = express.Router();
 
-router.get("/:id", getPost);
+postRouter.get(
+  "/timeline",
+  validator.protectFollow,
+  postController.getTimeline
+);
 
-router.get("/users/:username", getUserPost);
+postRouter.get("/:id", postController.getPost);
 
-router.post("/create", protectFollow, createPost);
+postRouter.get("/users/:username", postController.getUserPost);
 
-router.delete("/:id", protectFollow, removePost);
+postRouter.post("/create", validator.protectFollow, postController.createPost);
 
-router.put("/react/:id", protectFollow, reactionPost);
+postRouter.delete("/:id", validator.protectFollow, postController.removePost);
 
-router.put("/reply/:id", protectFollow, commentOnPost);
+postRouter.put(
+  "/react/:id",
+  validator.protectFollow,
+  postController.reactionPost
+);
 
-router.delete("/reply/:id", protectFollow, removeComment);
+postRouter.put(
+  "/reply/:id",
+  validator.protectFollow,
+  postController.commentOnPost
+);
 
-module.exports = router;
+postRouter.put(
+  "/remove/:id/:replyid",
+  validator.protectFollow,
+  postController.removeComment
+);
+
+export { postRouter };

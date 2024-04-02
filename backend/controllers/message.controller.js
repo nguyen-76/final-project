@@ -1,11 +1,14 @@
-const Conversation = require("../models/Conversation.js");
-const Message = require("../models/Message.js");
+import Conversation from "../models/Conversation.js";
+import Message from "../models/Message.js";
+import { getRecipientSocketId } from "../socket/socket.js";
+import { v2 as cloudinary } from "cloudinary";
 
 const messageController = {};
 
 messageController.sendMessage = async (req, res) => {
   try {
     const { recipientId, message } = req.body;
+    let { img } = req.body;
     const senderId = req.user._id;
 
     let conversation = await Conversation.findOne({
@@ -22,10 +25,15 @@ messageController.sendMessage = async (req, res) => {
       });
       await conversation.save();
     }
+    if (img) {
+      const uploadedResponse = await cloudinary.uploader.upload(img);
+      img = uploadedResponse.secure_url;
+    }
     const newMessage = new Message({
       conversationId: conversation._id,
       sender: senderId,
       text: message,
+      img: img || "",
     });
     await Promise.all([
       newMessage.save(),
@@ -36,6 +44,11 @@ messageController.sendMessage = async (req, res) => {
         },
       }),
     ]);
+    const recipientSocketId = getRecipientSocketId(recipientId);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("newMessage", newMessage);
+    }
+
     res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -79,4 +92,4 @@ messageController.getAllMessage = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-module.exports = messageController;
+export default messageController;

@@ -1,11 +1,11 @@
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
-let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,20}$/;
 
 const validator = {};
 
-validator.register = (req, res, next) => {
+validator.signUp = (req, res, next) => {
   let { username, email, password } = req.body;
   if (!username.length) {
     return res.status(403).json({ Error: "please provide username" });
@@ -16,15 +16,15 @@ validator.register = (req, res, next) => {
   if (!passwordRegex.test(password)) {
     return res.status(403).json({
       Error:
-        "Password must be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+        "Password must be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
     });
   }
   next();
 };
 
-validator.login = (req, res, next) => {
-  let { email, password } = req.body;
-  if (!email || !password) {
+validator.signIn = (req, res, next) => {
+  let { username, password } = req.body;
+  if (!username || !password) {
     return res
       .status(403)
       .json({ error: "Please provide both email and password" });
@@ -58,4 +58,4 @@ validator.protectFollow = async (req, res, next) => {
     return res.status(500).json({ message: error.message });
   }
 };
-module.exports = validator;
+export default validator;

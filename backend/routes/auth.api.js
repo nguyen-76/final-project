@@ -1,11 +1,8 @@
-const express = require("express");
-const {
-  register,
-  login,
-  logout,
-} = require("../controllers/auth.controller.js");
-const validator = require("../validators/validator.js");
-const router = express.Router();
+import express from "express";
+import authController from "../controllers/auth.controller.js";
+import validator from "../validators/validator.js";
+
+const authRouter = express.Router();
 
 /**
  * @route POST /users/register
@@ -13,10 +10,10 @@ const router = express.Router();
  * @body {username, email, password}
  * @access public
  */
-router.post("/register", register);
+authRouter.post("/register", validator.signUp, authController.register);
 
-router.post("/login", login);
+authRouter.post("/login", validator.signIn, authController.login);
 
-router.post("/logout", logout);
+authRouter.post("/logout", authController.logout);
 
-module.exports = router;
+export { authRouter };
