@@ -16,4 +16,8 @@ authRouter.post("/login", validator.signIn, authController.login);
 
 authRouter.post("/logout", authController.logout);
 
+authRouter.post("/request", authController.getGoogleUser);
+
+authRouter.get("/oauth", authController.googleAuth);
+
 export { authRouter };

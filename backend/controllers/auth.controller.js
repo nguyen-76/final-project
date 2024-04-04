@@ -1,6 +1,8 @@
+import getUserData from "../helpers/googleAuth.js";
 import generateTokenAndSetCookie from "../helpers/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import { OAuth2Client } from "google-auth-library";
 
 const authController = {};
 
@@ -55,6 +57,7 @@ authController.login = async (req, res) => {
       username: user.username,
       email: user.email,
       bio: user.bio,
+      password: user.password,
       profilePicture: user.profilePicture,
     });
   } catch (err) {
@@ -70,6 +73,50 @@ authController.logout = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+};
+
+authController.getGoogleUser = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Referrer-Policy", "no-referrer-when-downgrade");
+  const redirectURL = "http://localhost:5000/oauth";
+
+  const oAuth2Client = new OAuth2Client(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    redirectURL
+  );
+
+  const authorizeUrl = oAuth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: "https://www.googleapis.com/auth/userinfo.profile  openid ",
+    prompt: "consent",
+  });
+
+  res.json({ url: authorizeUrl });
+};
+
+authController.googleAuth = async (req, res) => {
+  const code = req.query.code;
+  try {
+    const redirectURL = "http://localhost:5000/oauth";
+    const oAuth2Client = new OAuth2Client(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      redirectURL
+    );
+    const r = await oAuth2Client.getToken(code);
+    // Make sure to set the credentials on the OAuth2 client.
+    await oAuth2Client.setCredentials(r.tokens);
+    console.info("Tokens acquired.");
+    const user = oAuth2Client.credentials;
+    console.log("credentials", user);
+    await getUserData(oAuth2Client.credentials.access_token);
+  } catch (err) {
+    console.log("Error logging in with OAuth2 user", err);
+  }
+
+  res.redirect(303, "http://localhost:300-/");
 };
 
 export default authController;

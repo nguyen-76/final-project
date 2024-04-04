@@ -10,6 +10,7 @@ userRouter.get(
   validator.protectFollow,
   userController.getSuggestedUsers
 );
+userRouter.get("/search", userController.searchUsers);
 userRouter.post(
   "/follow/:id",
   validator.protectFollow,
@@ -19,6 +20,13 @@ userRouter.put(
   "/update/:id",
   validator.protectFollow,
   userController.updateProfile
+);
+
+userRouter.put(
+  "/password/:id",
+  validator.updatePassword,
+  validator.protectFollow,
+  userController.updatePassword
 );
 
 export { userRouter };

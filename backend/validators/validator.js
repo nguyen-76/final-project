@@ -33,14 +33,11 @@ validator.signIn = (req, res, next) => {
 };
 
 validator.updatePassword = (req, res, next) => {
-  let { currentPassword, newPassword } = req.body;
-  if (
-    !passwordRegex.test(currentPassword) ||
-    !passwordRegex.test(newPassword)
-  ) {
+  let { oldPassword, newPassword } = req.body;
+  if (!passwordRegex.test(oldPassword) || !passwordRegex.test(newPassword)) {
     return res.status(403).json({
       error:
-        "Password must be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+        "Password must be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
     });
   }
   next();

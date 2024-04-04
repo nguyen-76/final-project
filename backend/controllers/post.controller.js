@@ -162,29 +162,4 @@ postController.getUserPost = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-postController.removeComment = async (req, res) => {
-  const { id, replyid } = req.params;
-  const post = await Post.findById(id);
-  try {
-    for (let i = 0; i < post[0].replies.length; i++) {
-      if (post[0].replies[i].id === replyid) {
-        await VehicleCategory.findByIdAndUpdate(
-          { _id: id },
-          { $pull: { replies: { id: replyid } } },
-          { new: true }
-        );
-        res.status(200).json({
-          message: "Comment deleted successfully.",
-        });
-      } else {
-        res.status(404).json({
-          message: "The given id is not found.",
-        });
-      }
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 export default postController;

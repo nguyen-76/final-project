@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Post from "../models/Post.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userController = {};
 
@@ -35,7 +36,7 @@ userController.followUnfollowUser = async (req, res) => {
 };
 // update profile
 userController.updateProfile = async (req, res) => {
-  const { name, username, email, password, bio } = req.body;
+  const { name, username, email, bio } = req.body;
   let { profilePicture } = req.body;
   const userId = req.user._id;
   try {
@@ -45,11 +46,6 @@ userController.updateProfile = async (req, res) => {
       return res
         .status(400)
         .json({ error: "You can't update other user profile" });
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      const hashPassword = await bcrypt.hash(password, salt);
-      user.password = hashPassword;
-    }
     if (profilePicture) {
       if (user.profilePicture) {
         await cloudinary.uploader.destroy(
@@ -78,8 +74,6 @@ userController.updateProfile = async (req, res) => {
       { arrayFilters: [{ "reply.userId": userId }] }
     );
 
-    user.password = null;
-
     res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -91,13 +85,9 @@ userController.getUserProfile = async (req, res) => {
     let user;
 
     if (mongoose.Types.ObjectId.isValid(query)) {
-      user = await User.findOne({ _id: query })
-        .select("-password")
-        .select("-updatedAt");
+      user = await User.findOne({ _id: query }).select("-updatedAt");
     } else {
-      user = await User.findOne({ username: query })
-        .select("-password")
-        .select("-updatedAt");
+      user = await User.findOne({ username: query }).select("-updatedAt");
     }
     if (!user) return res.status(400).json({ error: "User not found" });
     res.status(200).json(user);
@@ -130,6 +120,43 @@ userController.getSuggestedUsers = async (req, res) => {
     suggestedUsers.forEach((user) => (user.password = null));
 
     res.status(200).json(suggestedUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+userController.updatePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  let currentPassword = undefined;
+  try {
+    const userId = req.user._id;
+    let user = await User.findById(userId);
+    currentPassword = user.password;
+
+    const result = await bcrypt.compare(oldPassword, currentPassword);
+    if (!result) {
+      return res.status("401").send({
+        error: "Your old password was entered incorrectly, please try again.",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    user = await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+userController.searchUsers = async (req, res) => {
+  try {
+    const users = await User.find({ username: { $regex: req.query.username } })
+      .limit(10)
+      .select("username profilePicture");
+
+    res.json({ users });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

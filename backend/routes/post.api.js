@@ -30,10 +30,4 @@ postRouter.put(
   postController.commentOnPost
 );
 
-postRouter.put(
-  "/remove/:id/:replyid",
-  validator.protectFollow,
-  postController.removeComment
-);
-
 export { postRouter };
