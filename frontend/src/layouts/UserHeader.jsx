@@ -13,7 +13,6 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { BsInstagram } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../app/userAtom";
@@ -47,15 +46,6 @@ const UserHeader = ({ user }) => {
           </Text>
           <Flex gap={2} alignItems={"center"}>
             <Text fontSize={"sm"}>{user.username}</Text>
-            <Text
-              fontSize={"xs"}
-              bg={"gray.dark"}
-              color={"gray.light"}
-              p={1}
-              borderRadius={"full"}
-            >
-              holostagram.com
-            </Text>
           </Flex>
         </Box>
         <Box>
@@ -76,12 +66,18 @@ const UserHeader = ({ user }) => {
         </Box>
       </Flex>
       <Text>{user.bio}</Text>
-
-      {currentUser._id === user._id && (
-        <Link as={RouterLink} to="/update">
-          <Button size={"sm"}>Update Profile</Button>
-        </Link>
-      )}
+      <Flex gap={2}>
+        {currentUser._id === user._id && (
+          <Link as={RouterLink} to="/update">
+            <Button size={"sm"}>Update Profile</Button>
+          </Link>
+        )}
+        {currentUser._id === user._id && (
+          <Link as={RouterLink} to="/password">
+            <Button size={"sm"}>Change Password</Button>
+          </Link>
+        )}
+      </Flex>
 
       {currentUser._id !== user._id && (
         <Button size={"sm"} isLoading={updating} onClick={handleFollowUnfollow}>
@@ -94,13 +90,8 @@ const UserHeader = ({ user }) => {
           <Text color={"gray.light"}>{user.followers.length} Follower</Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
           <Text color={"gray.light"}>{user.following.length} Followings</Text>
-          <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link color={"gray.light"}>Facebook.com</Link>
         </Flex>
         <Flex>
-          <Box className="icon-container">
-            <BsInstagram size={24} cursor={"pointer"} />
-          </Box>
           <Box className="icon-container">
             <Menu>
               <MenuButton>
@@ -109,7 +100,7 @@ const UserHeader = ({ user }) => {
               <Portal>
                 <MenuList bg={"gray.dark"}>
                   <MenuItem bg={"gray.dark"} onClick={copyUrl}>
-                    Copy Link
+                    Copy profile
                   </MenuItem>
                 </MenuList>
               </Portal>
@@ -126,16 +117,6 @@ const UserHeader = ({ user }) => {
           cursor={"pointer"}
         >
           <Text fontWeight={"bold"}>Post</Text>
-        </Flex>
-        <Flex
-          flex={1}
-          borderBottom={"1px solid gray"}
-          justifyContent={"center"}
-          pb="3"
-          cursor={"pointer"}
-          color={"gray.light"}
-        >
-          <Text fontWeight={"bold"}>Reply</Text>
         </Flex>
       </Flex>
     </VStack>

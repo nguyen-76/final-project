@@ -13,6 +13,7 @@ import {
   Text,
   useColorModeValue,
   Link,
+  Image,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -20,6 +21,7 @@ import authScreenAtom from "../../app/authAtom";
 import { useSetRecoilState } from "recoil";
 import useShowToast from "../../hooks/useShowToast";
 import userAtom from "../../app/userAtom";
+import googleButton from "../../assets/btn_google_signin_dark_pressed_web.png";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,8 +32,21 @@ export default function LoginForm() {
     username: "",
     password: "",
   });
+  function navigate(url) {
+    window.location.href = url;
+  }
 
   const showToast = useShowToast();
+
+  const auth = async () => {
+    const response = await fetch("/api/users/request", {
+      method: "post",
+    });
+
+    const data = await response.json();
+    console.log(data);
+    navigate(data.url);
+  };
 
   const handleLogin = async () => {
     setLoading(true);
@@ -119,6 +134,9 @@ export default function LoginForm() {
                 isLoading={loading}
               >
                 Login
+              </Button>
+              <Button onClick={() => auth()}>
+                <Image src={googleButton} alt="google sign in" />
               </Button>
             </Stack>
             <Stack pt={6}>

@@ -17,6 +17,7 @@ import useShowToast from "../hooks/useShowToast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { conversationAtom, selectedConversationAtom } from "../app/messageAtom";
 import userAtom from "../app/userAtom";
+import { useSocket } from "../context/SocketContext";
 
 const ChatPage = () => {
   const [searchingUser, setSearchingUser] = useState(false);
@@ -28,6 +29,27 @@ const ChatPage = () => {
   const [conversations, setConversations] = useRecoilState(conversationAtom);
   const currentUser = useRecoilValue(userAtom);
   const showToast = useShowToast();
+  const { socket, onlineUsers } = useSocket();
+
+  useEffect(() => {
+    socket?.on("messagesSeen", ({ conversationId }) => {
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === conversationId) {
+            return {
+              ...conversation,
+              lastMessage: {
+                ...conversation.lastMessage,
+                seen: true,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+    });
+  }, [socket, setConversations]);
 
   useEffect(() => {
     const getConversation = async () => {
@@ -170,6 +192,9 @@ const ChatPage = () => {
             conversations.map((conversation) => (
               <Conversation
                 key={conversation._id}
+                isOnline={onlineUsers.includes(
+                  conversation.participants[0]._id
+                )}
                 conversation={conversation}
               />
             ))}

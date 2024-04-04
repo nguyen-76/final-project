@@ -9,6 +9,7 @@ import {
   useColorModeValue,
   Avatar,
   Center,
+  Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -16,6 +17,7 @@ import userAtom from "../app/userAtom";
 import { useRef } from "react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function UpdatePage() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -23,19 +25,18 @@ export default function UpdatePage() {
     name: user.name,
     username: user.username,
     email: user.email,
-    password: "",
     bio: user.bio,
   });
-
+  const [updating, setUpdating] = useState(false);
   const fileRef = useRef(null);
-
   const showToast = useShowToast();
-
   const { handleImgChange, imgUrl } = usePreviewImg();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (updating) return;
+    setUpdating(true);
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
         method: "PUT",
@@ -54,6 +55,9 @@ export default function UpdatePage() {
       localStorage.setItem("user-info", JSON.stringify(data));
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
+      navigate(`/${inputs.username}`);
     }
   };
   return (
@@ -130,18 +134,6 @@ export default function UpdatePage() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              placeholder="password"
-              _placeholder={{ color: "gray.500" }}
-              type="password"
-              value={inputs.password}
-              onChange={(e) => {
-                setInputs({ ...inputs, password: e.target.value });
-              }}
-            />
-          </FormControl>
-          <FormControl>
             <FormLabel>Bio</FormLabel>
             <Input
               placeholder="Bio"
@@ -162,7 +154,9 @@ export default function UpdatePage() {
                 bg: "red.500",
               }}
             >
-              Cancel
+              <Link as={RouterLink} to={"/"}>
+                Cancel
+              </Link>
             </Button>
             <Button
               bg={"blue.400"}
@@ -172,6 +166,7 @@ export default function UpdatePage() {
                 bg: "blue.500",
               }}
               type="submit"
+              isLoading={updating}
             >
               Submit
             </Button>

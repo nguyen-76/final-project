@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Flex,
   Image,
@@ -113,14 +112,6 @@ const PostPage = () => {
         <Reaction post={currentPost} />
       </Flex>
 
-      <Divider my={4} />
-      <Flex justifyContent={"space-between"}>
-        <Flex gap={2} alignItems={"center"}>
-          <Text fontSize={"2xl"}>👀</Text>
-          <Text color={"gray.light"}>Download to like and reply</Text>
-        </Flex>
-        <Button>Download</Button>
-      </Flex>
       <Divider my={4} />
       {currentPost.replies.map((reply) => (
         <Comment
