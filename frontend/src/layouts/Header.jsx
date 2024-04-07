@@ -100,7 +100,7 @@ const Header = () => {
       </Flex>
       {user && (
         <form onSubmit={handleSearch}>
-          <Flex alignItems={"center"} gap={2}>
+          <Flex alignItems={"center"} gap={2} w={"620px"}>
             <Input
               placeholder="Search for a user"
               onChange={(e) => setSearchText(e.target.value)}

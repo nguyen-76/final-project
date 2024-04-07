@@ -19,24 +19,16 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import authScreenAtom from "../../app/authAtom";
 import { useSetRecoilState } from "recoil";
-import useShowToast from "../../hooks/useShowToast";
-import userAtom from "../../app/userAtom";
 import googleButton from "../../assets/btn_google_signin_dark_pressed_web.png";
+import useLogin from "../../hooks/useLogin";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { handleLogin, inputs, setInputs, loading } = useLogin();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
-  const setUser = useSetRecoilState(userAtom);
-  const [inputs, setInputs] = useState({
-    username: "",
-    password: "",
-  });
   function navigate(url) {
     window.location.href = url;
   }
-
-  const showToast = useShowToast();
 
   const auth = async () => {
     const response = await fetch("/api/users/request", {
@@ -46,28 +38,6 @@ export default function LoginForm() {
     const data = await response.json();
     console.log(data);
     navigate(data.url);
-  };
-
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputs),
-      });
-      const data = await res.json();
-      if (data.error) {
-        showToast("Error", data.error, "error");
-        return;
-      }
-      localStorage.setItem("user-info", JSON.stringify(data));
-      setUser(data);
-    } catch (error) {
-      showToast("Error", error, "error");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
