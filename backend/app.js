@@ -33,8 +33,18 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
   // react app
-  app.get("*", (req, res) => {
+  app.get("*", (req, res, next) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+    res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Headers", [
+      "X-Requested-With",
+      "content-type",
+      "credentials",
+    ]);
+    res.header("Access-Control-Allow-Methods", "GET,POST");
+    res.status(200);
+    next();
   });
 }
 
