@@ -4,8 +4,8 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node backend/app.js",
-    "dev": "NODE_ENV=development nodemon backend/app.js",
+    "start": "SET NODE_ENV=production&& node backend/app.js",
+    "dev": "SET NODE_ENV=development&& nodemon backend/app.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "type": "module",
