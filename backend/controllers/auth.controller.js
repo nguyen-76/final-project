@@ -79,7 +79,7 @@ authController.getGoogleUser = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
-  const redirectURL = "http://localhost:5000/api/users/";
+  const redirectURL = "http://localhost:5000/api/users/oauth";
 
   const oAuth2Client = new OAuth2Client(
     process.env.CLIENT_ID,
@@ -99,7 +99,7 @@ authController.getGoogleUser = async (req, res) => {
 authController.googleAuth = async (req, res) => {
   const code = req.query.code;
   try {
-    const redirectURL = "http://localhost:5000/api/users/";
+    const redirectURL = "http://localhost:5000/api/users/oauth";
     const oAuth2Client = new OAuth2Client(
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET,
@@ -116,7 +116,7 @@ authController.googleAuth = async (req, res) => {
     console.log("Error logging in with OAuth2 user", err);
   }
 
-  res.redirect(303, "http://localhost:300-/");
+  res.redirect("http://localhost:5000/");
 };
 
 export default authController;

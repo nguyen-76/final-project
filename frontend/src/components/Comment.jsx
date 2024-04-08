@@ -1,5 +1,4 @@
 import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
-import { formatDistanceToNow } from "date-fns";
 
 const Comment = ({ reply, lastReply }) => {
   return (
@@ -17,14 +16,6 @@ const Comment = ({ reply, lastReply }) => {
             </Text>
           </Flex>
           <Text>{reply.text}</Text>
-          <Text
-            fontSize={"small"}
-            w={36}
-            textAlign={"right"}
-            color={"gray.light"}
-          >
-            {formatDistanceToNow(new Date(reply.createdAt))} ago
-          </Text>
         </Flex>
       </Flex>
       {!lastReply ? <Divider /> : null}
