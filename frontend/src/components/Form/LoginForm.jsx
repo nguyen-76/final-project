@@ -26,18 +26,9 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { handleLogin, inputs, setInputs, loading } = useLogin();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
-  function navigate(url) {
-    window.location.href = url;
-  }
 
-  const auth = async () => {
-    const response = await fetch("/api/users/request", {
-      method: "post",
-    });
-
-    const data = await response.json();
-    console.log(data);
-    navigate(data.url);
+  const handleGoogleSubmit = () => {
+    window.open("http://localhost:5000/api/users/google/callback", "_self");
   };
 
   return (
@@ -105,7 +96,7 @@ export default function LoginForm() {
               >
                 Login
               </Button>
-              <Button onClick={() => auth()}>
+              <Button onclick={handleGoogleSubmit}>
                 <Image src={googleButton} alt="google sign in" />
               </Button>
             </Stack>

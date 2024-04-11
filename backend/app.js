@@ -6,6 +6,8 @@ import { router } from "./routes/index.js";
 import { v2 as cloudinary } from "cloudinary";
 import { app, server } from "./socket/socket.js";
 import mongoose from "mongoose";
+import passport from "passport";
+import session from "express-session";
 
 dotenv.config();
 
@@ -26,6 +28,15 @@ cloudinary.config({
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  session({
+    secret: "mysecretkey",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api", router);
 

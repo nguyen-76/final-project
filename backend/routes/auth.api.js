@@ -1,6 +1,7 @@
 import express from "express";
 import authController from "../controllers/auth.controller.js";
 import validator from "../validators/validator.js";
+import passport from "passport";
 
 const authRouter = express.Router();
 
@@ -16,8 +17,16 @@ authRouter.post("/login", validator.signIn, authController.login);
 
 authRouter.post("/logout", authController.logout);
 
-authRouter.post("/request", authController.getGoogleUser);
+authRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-authRouter.get("/oauth", authController.googleAuth);
-
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:5000/",
+    failureRedirect: "http://localhost:5000/auth",
+  })
+);
 export { authRouter };
