@@ -27,8 +27,8 @@ export default function LoginForm() {
   const { handleLogin, inputs, setInputs, loading } = useLogin();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
 
-  const handleGoogleSubmit = () => {
-    window.open("http://localhost:5000/api/users/google/callback", "_self");
+  const handleGoogleSubmit = async () => {
+    window.open("http://localhost:5000/api/users/google", "_self");
   };
 
   return (
@@ -96,7 +96,7 @@ export default function LoginForm() {
               >
                 Login
               </Button>
-              <Button onclick={handleGoogleSubmit}>
+              <Button onClick={handleGoogleSubmit}>
                 <Image src={googleButton} alt="google sign in" />
               </Button>
             </Stack>
