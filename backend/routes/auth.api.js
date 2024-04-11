@@ -25,8 +25,8 @@ authRouter.get(
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5000/",
-    failureRedirect: "http://localhost:5000/auth",
+    successRedirect: "https://holostagram.onrender.com/",
+    failureRedirect: "https://holostagram.onrender.com/auth",
   })
 );
 export { authRouter };

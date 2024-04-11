@@ -6,6 +6,7 @@ import {
   Link,
   Stack,
   useColorMode,
+  Box,
 } from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../app/userAtom";
@@ -100,8 +101,17 @@ const Header = () => {
       </Flex>
       {user && (
         <form onSubmit={handleSearch}>
-          <Flex flex={70}></Flex>
-          <Flex flex={30} alignItems={"center"} gap={2} w={"320px"}>
+          <Box flex={70}></Box>
+          <Box
+            flex={30}
+            alignItems={"center"}
+            gap={2}
+            w={"320px"}
+            display={{
+              base: "none",
+              md: "block",
+            }}
+          >
             <Input
               placeholder="Search for a user"
               onChange={(e) => setSearchText(e.target.value)}
@@ -113,7 +123,7 @@ const Header = () => {
             >
               <SearchIcon />
             </Button>
-          </Flex>
+          </Box>
         </form>
       )}
     </Stack>
