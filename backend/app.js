@@ -65,7 +65,7 @@ passport.use(
           });
 
           await user.save();
-          localStorage.setItem("user-info", user);
+          window.localStorage.setItem("user-info", user);
         }
 
         return done(null, user);

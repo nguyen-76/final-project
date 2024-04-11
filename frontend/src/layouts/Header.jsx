@@ -101,16 +101,12 @@ const Header = () => {
       </Flex>
       {user && (
         <form onSubmit={handleSearch}>
-          <Box flex={70}></Box>
           <Box
-            flex={30}
             alignItems={"center"}
             gap={2}
             w={"320px"}
-            display={{
-              base: "none",
-              md: "block",
-            }}
+            position={"relative"}
+            left={"620px"}
           >
             <Input
               placeholder="Search for a user"

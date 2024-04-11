@@ -28,7 +28,7 @@ export default function LoginForm() {
   const setAuthScreen = useSetRecoilState(authScreenAtom);
 
   const handleGoogleSubmit = async () => {
-    window.open("http://localhost:5000/api/users/google", "_self");
+    window.open("https://holostagram.onrender.com/api/users/google", "_self");
   };
 
   return (
