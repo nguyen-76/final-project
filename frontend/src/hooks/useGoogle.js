@@ -14,7 +14,7 @@ const useGoogle = () => {
 
       const result = await signInWithPopup(auth, provider);
 
-      const res = await fetch("/api/auth/google", {
+      const res = await fetch("/api/users/google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
