@@ -35,7 +35,7 @@ authController.register = async (req, res) => {
       res.status(400).json({ error: "Invalid user data" });
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Failed to register" });
   }
 };
 
@@ -59,7 +59,7 @@ authController.login = async (req, res) => {
       profilePicture: user.profilePicture,
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "User not found" });
   }
 };
 
@@ -69,7 +69,7 @@ authController.logout = async (req, res) => {
     res.cookie("jwt", "", { maxAge: 1 });
     res.status(200).json({ message: "User is log out" });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "User already log out" });
   }
 };
 
@@ -101,7 +101,7 @@ authController.google = async (req, res) => {
       res.status(200).json(rest);
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Google account does not exist" });
   }
 };
 export default authController;

@@ -31,7 +31,7 @@ userController.followUnfollowUser = async (req, res) => {
       res.status(200).json({ message: "User followed successfully" });
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not follow user" });
   }
 };
 // update profile
@@ -76,9 +76,10 @@ userController.updateProfile = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Failed to update profile" });
   }
 };
+
 userController.getUserProfile = async (req, res) => {
   const { query } = req.params;
   try {
@@ -87,12 +88,14 @@ userController.getUserProfile = async (req, res) => {
     if (mongoose.Types.ObjectId.isValid(query)) {
       user = await User.findOne({ _id: query }).select("-updatedAt");
     } else {
-      user = await User.findOne({ username: query }).select("-updatedAt");
+      user = await User.findOne({ username: { $regex: query } }).select(
+        "-updatedAt"
+      );
     }
     if (!user) return res.status(400).json({ error: "User not found" });
     res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "User don't exist" });
   }
 };
 
@@ -121,7 +124,7 @@ userController.getSuggestedUsers = async (req, res) => {
 
     res.status(200).json(suggestedUsers);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "No suggested user" });
   }
 };
 
@@ -146,7 +149,7 @@ userController.updatePassword = async (req, res) => {
     user = await user.save();
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Failed to update password" });
   }
 };
 
@@ -158,7 +161,7 @@ userController.searchUsers = async (req, res) => {
 
     res.json({ users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Failed to search user" });
   }
 };
 

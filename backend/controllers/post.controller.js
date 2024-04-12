@@ -35,7 +35,7 @@ postController.createPost = async (req, res) => {
     await newPost.save();
     res.status(201).json(newPost);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not create post" });
   }
 };
 
@@ -48,7 +48,7 @@ postController.getPost = async (req, res) => {
     }
     res.status(201).json(post);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not get post" });
   }
 };
 
@@ -69,7 +69,7 @@ postController.removePost = async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Post delete successfully" });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not delete post" });
   }
 };
 
@@ -91,7 +91,7 @@ postController.reactionPost = async (req, res) => {
       res.status(200).json({ message: "Post liked" });
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not react to post" });
   }
 };
 
@@ -118,7 +118,7 @@ postController.commentOnPost = async (req, res) => {
     await post.save();
     res.status(200).json(reply);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Can not comment on post" });
   }
 };
 
@@ -143,7 +143,7 @@ postController.getTimeline = async (req, res) => {
     const timeline = myPost.concat(...feedPosts);
     res.status(200).json(timeline);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Can not get timeline" });
   }
 };
 
@@ -159,7 +159,7 @@ postController.getUserPost = async (req, res) => {
     });
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Can not get post" });
   }
 };
 export default postController;

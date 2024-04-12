@@ -8,14 +8,14 @@ const validator = {};
 validator.signUp = (req, res, next) => {
   let { username, email, password } = req.body;
   if (!username.length) {
-    return res.status(403).json({ Error: "please provide username" });
+    return res.status(403).json({ error: "please provide username" });
   }
   if (!email.length) {
-    return res.status(403).json({ Error: "Please provide email" });
+    return res.status(403).json({ error: "Please provide email" });
   }
   if (!passwordRegex.test(password)) {
     return res.status(403).json({
-      Error:
+      error:
         "Password must be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
     });
   }

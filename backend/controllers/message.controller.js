@@ -51,7 +51,7 @@ messageController.sendMessage = async (req, res) => {
 
     res.status(201).json(newMessage);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Can not send message" });
   }
 };
 
@@ -71,7 +71,7 @@ messageController.getMessage = async (req, res) => {
     }).sort({ createdAt: 1 });
     res.status(200).json(messages);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Can not get message" });
   }
 };
 
@@ -89,7 +89,7 @@ messageController.getAllMessage = async (req, res) => {
     });
     res.status(200).json(conversations);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Can not get conversation" });
   }
 };
 export default messageController;
