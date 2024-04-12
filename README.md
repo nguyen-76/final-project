@@ -1,215 +1,125 @@
 - Background
-  - MeSpace is a social network that allows people to join by creating accounts. Each User should provide a name, an email, and a password to create an account.
-  - The email address should not link to any account in the system. After joining MySpace, users can update their profile with Avatar, Company, Job Title, Social Links, and a short description.
-  - Users can write Posts that contain text content and an image. The new posts will be shown on the user profile page, allowing other users to comment. Users can also React with like or dislike on a post or a Comment.
-  - Users can send Friend Requests to other users who have an open relationship with them. Users can accept or decline a friend request. After accepting a friend request, both become friends, and they can see posts from each other.
+  - Holostagram is a social platform that allow people to join by creating account. Each user should provide a full name, username, email and password to create an account.
+  - The email address should not link to any account in the system. After joining Holostagram, user can update their profile picture, username, biography, password and name.
+  - Users can write Posts that contain text content and an image. The new posts will be shown on the user profile page, allowing other users to comment. Users can also React with like or dislike on a post or a comment.
+  - Users can follow other user. After following other user, user can see other user post.
 - Authentication
-  - As a user, I can see a list of other users so that I can send, accept or decline friend requests.
   - As a user, I can see my current profile info.
-  - As a user, I can see a specific user's profile given a user ID.
-  - As a user, I can update my profile with Avatar, Company, Job Title, Social Links, and a short description.
+  - As a user, I can see a specific user's profile given a username.
+  - As a user, I can update my profile with profile picture, name, username, password, and biography.
 - Posts
-  - As a user, I can see a list of posts.
+  - As a user, I can see timeline of post.
   - As a user, I can create a new post with text content and an image.
-  - As a user, I can edit my posts.
   - As a user, I can delete my posts.
 - Comments
   - As a user, I can see a list of comments on a post.
   - As a user, I can write comments on a post.
-  - As a user, I can update my comments.
-  - As a user, I can delete my comments.
 - Reactions
-  - As a user, I can react like or dislike to a post or a comment.
-- Friends
-  - As a user, I can send a friend request to another user who is not my friend.
-  - As a user, I can see a list of friend requests I have received.
-  - As a user, I can see a list of my friends.
-  - As a user, I can accept or decline a friend request.
-  - As a user, I can cancel a friend request I sent.
-  - As a user, I can unfriend a user in my friend list.
+
+  - As a user, I can react like or unlike to a post.
+
 - API endpoints
 
-- Auth APIs
-/**
-* @route POST /auth/login
-* @description Log in with username and password
-* @body {email, passsword}
-* @access Public
-*/
+* Auth APIs
 
-- Friend APIS
- /**
-* @route GET /friends/requests/incoming
-* @description Get the list of received pending requests
-* @access Login required
-*/
+- @route POST /users/register
+- @description Register with full name, username, email, password
+- @body {full name, username, email, password}
+- @access Public
 
- /**
-* @route GET /friends/requests/outgoing
-* @description Get the list of sent pending requests
-* @access Login required
-*/
+- @route POST /users/login
+- @description Log in with username and password
+- @body {user, passsword}
+- @access Public
 
-  /**
-* @route GET /friends/
-* @description Get the list of friends
-* @access Login required
-*/
+- @route POST /users/logout
+- @description Logout of user account
+- @access Login required
 
-  /**
-* @route POST /friends/requests
-* @description Send a friend request
-* @body {to : User ID}
-* @access Login required
-*/
+- @route POST /users/google
+- @description Log in with google account
+- @access Public
 
-  /**
-* @route PUT /friends/requests/:userId
-* @description Accept/Reject a received pending requests
-* @body {status : 'accepted' or 'declined'}
-* @access Login required
-  */
+* Users APIS
 
-  /**
-* @route DELETE /friends/requests/:userId
-* @description cancel a friend request
-* @access Login required
-  */
+- @route GET /users/profile/:query
+- @description Get a user profile
+- @body {username, id}
+- @access Login required
 
-  /**
-* @route DELETE /friends/:userId
-* @description remove a friend
-* @access Login required
-  */
+- @route GET /users/profile/:query
+- @description Get a user profile
+- @body {username, id}
+- @access Login required
 
-- User APIs
-  /**
-* @route GET /users/page=1?&limit=10
-* @description Get user with pagination
-* @body
-* @access Login required
-  */
+- @route GET /users/suggested
+- @description Get suggestusted user
+- @body {username}
+- @access Login required
 
-  /**
-* @route GET /users/me
-* @description Get current user info
-* @body
-* @access Login required
-  */
+- @route GET /users/search
+- @description Get specific user
+- @body {username, id}
+- @access Login required
 
-  /**
-* @route GET /users/:id
-* @description Get user profile
-* @body
-* @access Login required
-  */
+- @route POST /users/follow/:id
+- @description Follow a user
+- @body {id}
+- @access Login required
 
-  /**
-* @route POST /users
-* @description Register new user
-* @body {name, email, password}
-* @access Public
-  */
+- @route PUT /users/update/:id
+- @description Update a profile
+- @body {full name, username, email, bio, profile picture}
+- @access Login required
 
-  /**
-* @route PUT /users/:id
-* @description Update user profile
-* @body {name, avatar, cover, aboutMe, city, country, company, jobtitle, fbLink, instagramLink, linkedInLink, twitterLink}
-* @access Login required
-  */
-  
-- Post APIs
+- @route PUT /users/password/:id
+- @description Update password
+- @body {old password, new password}
+- @access Login required
 
-  /**
-* @route GET /posts/:id/comments
-* @description Get comments of a post
-* @body
-* @access Login required
-  */
-  
-  /**
-* @route GET /posts/:id
-* @description Get a single post
-* @body
-* @access Login required
-  */
+* Post APIs
 
-  /**
-* @route POST /posts
-* @description Create a new post
-* @body {content, image}
-* @access Login reuqired
-  */
+- @route GET /posts/timeline
+- @description Get timeline of post of people you follow
+- @access Login required
 
-  /**
-* @route PUT /posts/user/userId? page=1&limit=10
-* @description Get all posts a user can see with pagination
-* @body
-* @access Login required
-  */
+- @route GET /posts/:id
+- @description Get a post
+- @access Login required
 
-  /**
-* @route PUT /posts/:id
-* @description Update a post
-* @body {content, image}
-* @access Login required
-  */
+- @route GET /posts/users/:username
+- @description Get a user post
+- @access Login required
 
-  /**
-* @route DELETE /posts/:id
-* @description Delete a post
-* @body
-* @access Login required
-  */
+- @route POST /posts/create
+- @description Create a post
+- @body {text, img}
+- @access Login required
 
-- Comment APIs
-  <details>
-  /**
-* @route GET /comments/:id
-* @description Get details of a comment
-* @body
-* @access Login required
-  */
+- @route DELETE /posts/:id
+- @description Delete a post
+- @access Login required
 
-  /**
-* @route POST /comments
-* @description Create a new comment
-* @body {content, postId}
-* @access Login required
-  */
+- @route PUT /posts/react/:id
+- @description Like or unlike a post
+- @access Login required
 
-  /**
-* @route PUT /comment:id
-* @description Update a comment
-* @body
-* @access Login required
-  */
+- @route GET /posts/reply/:id
+- @description Reply to a post
+- @body {text}
+- @access Login required
 
-  /**
-* @route DELETE comments/:id
-* @description Delete a comment
-* @body
-* @access Login required
-  */
+* Conversation APIs
 
-  /**
-* @route DELETE /comments/:id
-* @description Delete a comment
-* @body
-* @access Login required
-  */
+- @route GET /messages/conversation
+- @description Get a whole conversation
+- @access Login required
 
-- Reaction APIs
-  /**
-* @route
-* @description
-* @body
-* @access Login required
-  */
+- @route GET /messages/:otherUserId
+- @description Get a message with a single person
+- @access Login required
 
-  /**
-* @route
-* @description
-* @body
-* @access Login required
-  */
+- @route POST /messages/
+- @description Send a message
+- @body {text}
+- @access Login required
