@@ -17,109 +17,114 @@
 - Reactions
 
   - As a user, I can react like or unlike to a post.
+<hr>
 
 - API endpoints
 
 * Auth APIs
+<hr>
 
-- @route POST /users/register
-- @description Register with full name, username, email, password
-- @body {full name, username, email, password}
-- @access Public
+    - @route POST /users/register
+    - @description Register with full name, username, email, password
+    - @body {full name, username, email, password}
+    - @access Public
 
-- @route POST /users/login
-- @description Log in with username and password
-- @body {user, passsword}
-- @access Public
+    - @route POST /users/login
+    - @description Log in with username and password
+    - @body {user, passsword}
+    - @access Public
 
-- @route POST /users/logout
-- @description Logout of user account
-- @access Login required
+    - @route POST /users/logout
+    - @description Logout of user account
+    - @access Login required
 
-- @route POST /users/google
-- @description Log in with google account
-- @access Public
+    - @route POST /users/google
+    - @description Log in with google account
+    - @access Public
 
 * Users APIS
+<hr>
 
-- @route GET /users/profile/:query
-- @description Get a user profile
-- @body {username, id}
-- @access Login required
-
-- @route GET /users/profile/:query
-- @description Get a user profile
-- @body {username, id}
-- @access Login required
-
-- @route GET /users/suggested
-- @description Get suggestusted user
-- @body {username}
-- @access Login required
-
-- @route GET /users/search
-- @description Get specific user
-- @body {username, id}
-- @access Login required
-
-- @route POST /users/follow/:id
-- @description Follow a user
-- @body {id}
-- @access Login required
-
-- @route PUT /users/update/:id
-- @description Update a profile
-- @body {full name, username, email, bio, profile picture}
-- @access Login required
-
-- @route PUT /users/password/:id
-- @description Update password
-- @body {old password, new password}
-- @access Login required
+    - @route GET /users/profile/:query
+    - @description Get a user profile
+    - @body {username, id}
+    - @access Login required
+    
+    - @route GET /users/profile/:query
+    - @description Get a user profile
+    - @body {username, id}
+    - @access Login required
+  
+    - @route GET /users/suggested
+    - @description Get suggestusted user
+    - @body {username}
+    - @access Login required
+  
+    - @route GET /users/search
+    - @description Get specific user
+    - @body {username, id}
+    - @access Login required
+  
+    - @route POST /users/follow/:id
+    - @description Follow a user
+    - @body {id}
+    - @access Login required
+  
+    - @route PUT /users/update/:id
+    - @description Update a profile
+    - @body {full name, username, email, bio, profile picture}
+    - @access Login required
+  
+    - @route PUT /users/password/:id
+    - @description Update password
+    - @body {old password, new password}
+    - @access Login required
 
 * Post APIs
+<hr>
 
-- @route GET /posts/timeline
-- @description Get timeline of post of people you follow
-- @access Login required
-
-- @route GET /posts/:id
-- @description Get a post
-- @access Login required
-
-- @route GET /posts/users/:username
-- @description Get a user post
-- @access Login required
-
-- @route POST /posts/create
-- @description Create a post
-- @body {text, img}
-- @access Login required
-
-- @route DELETE /posts/:id
-- @description Delete a post
-- @access Login required
-
-- @route PUT /posts/react/:id
-- @description Like or unlike a post
-- @access Login required
-
-- @route GET /posts/reply/:id
-- @description Reply to a post
-- @body {text}
-- @access Login required
+    - @route GET /posts/timeline
+    - @description Get timeline of post of people you follow
+    - @access Login required
+  
+    - @route GET /posts/:id
+    - @description Get a post
+    - @access Login required
+  
+    - @route GET /posts/users/:username
+    - @description Get a user post
+    - @access Login required
+  
+    - @route POST /posts/create
+    - @description Create a post
+    - @body {text, img}
+    - @access Login required
+  
+    - @route DELETE /posts/:id
+    - @description Delete a post
+    - @access Login required
+  
+    - @route PUT /posts/react/:id
+    - @description Like or unlike a post
+    - @access Login required
+  
+    - @route GET /posts/reply/:id
+    - @description Reply to a post
+    - @body {text}
+    - @access Login required
 
 * Conversation APIs
+<hr>
 
-- @route GET /messages/conversation
-- @description Get a whole conversation
-- @access Login required
-
-- @route GET /messages/:otherUserId
-- @description Get a message with a single person
-- @access Login required
-
-- @route POST /messages/
-- @description Send a message
-- @body {text}
-- @access Login required
+    - @route GET /messages/conversation
+    - @description Get a whole conversation
+    - @access Login required
+  
+    - @route GET /messages/:otherUserId
+    - @description Get a message with a single person
+    - @access Login required
+  
+    - @route POST /messages/
+    - @description Send a message
+    - @body {text}
+    - @access Login required
