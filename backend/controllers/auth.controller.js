@@ -86,6 +86,7 @@ authController.google = async (req, res) => {
         Math.random().toString(36).slice(-8);
       const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
       const newUser = new User({
+        name: req.body.name,
         username:
           req.body.name.split(" ").join("").toLowerCase() +
           Math.random().toString(36).slice(-4),
