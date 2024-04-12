@@ -158,6 +158,7 @@ userController.searchUsers = async (req, res) => {
     const users = await User.find({ username: { $regex: req.query.username } })
       .limit(10)
       .select("username profilePicture");
+    if (!users) return res.status(400).json({ error: "User not found" });
 
     res.json({ users });
   } catch (error) {
