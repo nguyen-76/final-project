@@ -107,6 +107,10 @@ const Header = () => {
             w={"320px"}
             position={"relative"}
             left={"620px"}
+            display={{
+              base: "flex",
+              md: "block",
+            }}
           >
             <Input
               placeholder="Search for a user"
