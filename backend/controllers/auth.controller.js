@@ -73,4 +73,34 @@ authController.logout = async (req, res) => {
   }
 };
 
+authController.google = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const { password: pass, ...rest } = user._doc;
+      generateTokenAndSetCookie(user._id, res);
+      res.status(200).json(rest);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      const newUser = new User({
+        username:
+          req.body.name.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-4),
+        email: req.body.email,
+        password: hashedPassword,
+        profilePicture: req.body.photo,
+      });
+
+      await newUser.save();
+      const { password: pass, ...rest } = newUser._doc;
+      generateTokenAndSetCookie(newUser._id, res);
+      res.status(200).json(rest);
+    }
+  } catch (error) {
+    return res.status(500).json({ error: err.message });
+  }
+};
 export default authController;

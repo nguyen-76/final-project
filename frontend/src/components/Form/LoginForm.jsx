@@ -21,15 +21,13 @@ import authScreenAtom from "../../app/authAtom";
 import { useSetRecoilState } from "recoil";
 import googleButton from "../../assets/btn_google_signin_dark_pressed_web.png";
 import useLogin from "../../hooks/useLogin";
+import useGoogle from "../../hooks/useGoogle";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { handleLogin, inputs, setInputs, loading } = useLogin();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
-
-  const handleGoogleSubmit = async () => {
-    window.open("https://holostagram.onrender.com/api/users/google", "_self");
-  };
+  const { handleGoogleSubmit } = useGoogle();
 
   return (
     <Flex align={"center"} justify={"center"}>
