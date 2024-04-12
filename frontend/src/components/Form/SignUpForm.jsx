@@ -30,12 +30,28 @@ export default function SignupForm() {
     email: "",
     password: "",
   });
-
+  let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
 
   const handleSignUp = async () => {
     try {
+      if (!inputs.name || !inputs.username) {
+        showToast("Error", "Please provide name and username");
+        return;
+      }
+      if (inputs.email.length) {
+        showToast("Error", "Please provide an email", "error");
+        return;
+      }
+      if (!passwordRegex.test(inputs.password)) {
+        showToast(
+          "Error",
+          "Password must be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+          "error"
+        );
+        return;
+      }
       const res = await fetch("/api/users/register", {
         method: "POST",
         headers: {

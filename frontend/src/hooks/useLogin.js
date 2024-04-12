@@ -15,6 +15,10 @@ const useLogin = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
+      if (!inputs.username || !inputs.password) {
+        showToast("Error", "Please provide email and password", "error");
+        return;
+      }
       const res = await fetch("/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
