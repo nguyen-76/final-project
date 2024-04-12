@@ -95,12 +95,12 @@ authController.google = async (req, res) => {
       });
 
       await newUser.save();
-      const { password: pass, ...rest } = newUser._doc;
       generateTokenAndSetCookie(newUser._id, res);
+      const { password: pass, ...rest } = newUser._doc;
       res.status(200).json(rest);
     }
   } catch (error) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: error.message });
   }
 };
 export default authController;
