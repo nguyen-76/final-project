@@ -5,12 +5,13 @@ import validator from "../validators/validator.js";
 const userRouter = express.Router();
 
 userRouter.get("/profile/:query", userController.getUserProfile);
+
 userRouter.get(
   "/suggested",
   validator.protectFollow,
   userController.getSuggestedUsers
 );
-userRouter.get("/search", userController.searchUsers);
+
 userRouter.post(
   "/follow/:id",
   validator.protectFollow,

@@ -41,14 +41,14 @@ const HomePage = () => {
     e.preventDefault();
     setSearchingUser(true);
     try {
-      const res = await fetch(`/api/users/search?username=${searchText}`);
+      const res = await fetch(`/api/users/profile/${searchText}`);
       const searchUser = await res.json();
       console.log(searchUser);
       if (searchUser.error) {
-        showToast("Error", searchUser.message, "error");
+        showToast("Error", "User does not exist", "error");
         return;
       }
-      navigate(`/${searchUser.users[0].username}`);
+      navigate(`/${searchUser.username}`);
       setSearchText("");
     } catch (error) {
       showToast("Error", error, "error");

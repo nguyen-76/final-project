@@ -77,7 +77,7 @@ const ChatPage = () => {
       const res = await fetch(`/api/users/profile/${searchText}`);
       const searchUser = await res.json();
       if (searchUser.error) {
-        showToast("Error", searchUser.message, "error");
+        showToast("Error", "User does not exist", "error");
         return;
       }
 

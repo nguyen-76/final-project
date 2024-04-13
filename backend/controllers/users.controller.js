@@ -153,17 +153,4 @@ userController.updatePassword = async (req, res) => {
   }
 };
 
-userController.searchUsers = async (req, res) => {
-  try {
-    const users = await User.find({ username: { $regex: req.query.username } })
-      .limit(10)
-      .select("username profilePicture");
-    if (!users) return res.status(400).json({ error: "User not found" });
-
-    res.json({ users });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to search user" });
-  }
-};
-
 export default userController;
