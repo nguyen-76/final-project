@@ -40,7 +40,7 @@ export default function SignupForm() {
         showToast("Error", "Please provide name and username");
         return;
       }
-      if (inputs.email.length) {
+      if (!inputs.email.length) {
         showToast("Error", "Please provide an email", "error");
         return;
       }
