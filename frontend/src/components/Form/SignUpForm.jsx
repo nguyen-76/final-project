@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import {
   Flex,
   Box,
@@ -31,6 +32,7 @@ export default function SignupForm() {
     password: "",
   });
   let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
+  let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
 
@@ -40,7 +42,7 @@ export default function SignupForm() {
         showToast("Error", "Please provide name and username");
         return;
       }
-      if (!inputs.email.length) {
+      if (!inputs.email.length || !emailRegex.test(inputs.email)) {
         showToast("Error", "Please provide an email", "error");
         return;
       }

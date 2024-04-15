@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,20}$/;
+let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const validator = {};
 
@@ -10,7 +11,7 @@ validator.signUp = (req, res, next) => {
   if (!username.length) {
     return res.status(403).json({ error: "please provide username" });
   }
-  if (!email.length) {
+  if (!email.length || !emailRegex.test(email)) {
     return res.status(403).json({ error: "Please provide email" });
   }
   if (!passwordRegex.test(password)) {
