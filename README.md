@@ -1,3 +1,4 @@
+Demo: https://holostagram.onrender.com/
 - Background
   - Holostagram is a social platform that allow people to join by creating account. Each user should provide a full name, username, email and password to create an account.
   - The email address should not link to any account in the system. After joining Holostagram, user can update their profile picture, username, biography, password and name.
